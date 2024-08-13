@@ -1,10 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
+import Navbar from './component/navbar/Navbar';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { darkTheme } from './theme/DarkTheme';
 
 function App() {
   return (
-    <div className="App">
-      <h1 className='text-red-600'>Online food ordering platform</h1>
+    <div>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Navbar />
+      </ThemeProvider>
+
     </div>
   );
 }
