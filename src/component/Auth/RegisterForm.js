@@ -89,21 +89,26 @@ const RegisterForm = () => {
           helperText={formik.touched.password && formik.errors.password}
         />
 
-        <FormControl fullWidth margin='normal'>
-          <InputLabel id="role">Role</InputLabel>
-          <Select
-            labelId="role"
-            id="role"
-            label="Role"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.role && Boolean(formik.errors.role)}
-            helperText={formik.touched.role && formik.errors.role}
-          >
-            <MenuItem value={"ROLE_CUSTOMER"}>Customer</MenuItem>
-            <MenuItem value={"ROLE_RESTAURANT_OWNER"}>Restaurant Owner</MenuItem>
-          </Select>
-        </FormControl>
+
+
+        <TextField
+          select
+          margin='normal'
+          variant='outlined'
+          fullWidth
+          id="role"
+          name='role'
+          labelId="role"
+          label="Role"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.role && Boolean(formik.errors.role)}
+          helperText={formik.touched.role && formik.errors.role}
+        >
+          <MenuItem value={"ROLE_CUSTOMER"}>Customer</MenuItem>
+          <MenuItem value={"ROLE_RESTAURANT_OWNER"}>Restaurant Owner</MenuItem>
+        </TextField>
+
 
         <Button
           sx={{ mt: 2, padding: "1rem" }}
