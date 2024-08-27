@@ -6,7 +6,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const Navbar = () => {
     return (
-        <div className='px-5 z-50 py-[.8rem] bg-[#e91e63] lg:px-20 flex justify-between'>
+        <div className='px-5 sticky z-50 py-[.8rem] bg-[#e91e63] lg:px-20 flex justify-between'>
 
             <div className='lg:mr-10 cursor-pointer flex items-center space-x-4'>
                 <li className='logo font-semibold text-gray-300 text-2xl list-none'>
