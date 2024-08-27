@@ -3,8 +3,13 @@ import React from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import { pink } from '@mui/material/colors';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Person } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+
+    const navigate = useNavigate();
+
     return (
         <div className='px-5 sticky z-50 py-[.8rem] bg-[#e91e63] lg:px-20 flex justify-between'>
 
@@ -22,7 +27,9 @@ const Navbar = () => {
                 </div>
                 <div className=''>
                     <IconButton>
-                        <Avatar sx={{ bgcolor: "white", color: pink.A400 }}>I</Avatar>
+                        {true
+                            ? <Avatar sx={{ bgcolor: "white", color: pink.A400 }}>I</Avatar>
+                            : <IconButton onClick={() => navigate("/account/login")}><Person /></IconButton>}
                     </IconButton>
                 </div>
                 <div className=''>

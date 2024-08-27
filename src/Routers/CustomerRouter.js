@@ -5,6 +5,7 @@ import RestaurantDetails from '../component/Restaurant/RestaurantDetails'
 import Cart from '../component/Cart/Cart'
 import Profile from '../component/Profile/Profile'
 import Navbar from '../component/navbar/Navbar'
+import Auth from '../component/Auth/Auth'
 
 const CustomerRouter = () => {
     return (
@@ -17,6 +18,7 @@ const CustomerRouter = () => {
                 <Route path='/cart' element={<Cart />} />
                 <Route path='/my-profile/*' element={<Profile />} />
             </Routes>
+            <Auth />
         </div>
     )
 }
