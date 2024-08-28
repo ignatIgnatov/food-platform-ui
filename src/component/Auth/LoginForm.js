@@ -80,41 +80,6 @@ const LoginForm = () => {
         Don't have an account?
         <Button sx={{ ml: 1 }} size='small' onClick={() => navigate("/account/register")}>Register here</Button>
       </Typography>
-
-      {/* <Formik onSubmit={handleSubmit} initialValue={initialValue}>
-        <Form>
-          <Field
-            as={TextField}
-            name='email'
-            label='Email'
-            value={Formik.}
-            fullWidth
-            variant='outlined'
-            margin='normal'
-          />
-          <Field
-            as={TextField}
-            name='password'
-            label='Password'
-            fullWidth
-            variant='outlined'
-            margin='normal'
-          />
-          <Button
-            sx={{ mt: 2, padding: "1rem" }}
-            fullWidth
-            type='submit'
-            variant='contained'
-          >
-            Login</Button>
-        </Form>
-      </Formik>
-
-      <Typography variant='body2' align='center' sx={{ mt: 3 }}>
-        Don't have an account?
-        <Button sx={{ ml: 1 }} size='small' onClick={() => navigate("/account/register")}>Register here</Button>
-      </Typography> */}
-
     </div>
   )
 }

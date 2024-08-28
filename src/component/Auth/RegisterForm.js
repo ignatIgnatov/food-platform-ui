@@ -1,4 +1,4 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
+import { Button, MenuItem, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
@@ -88,9 +88,6 @@ const RegisterForm = () => {
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
         />
-
-
-
         <TextField
           select
           margin='normal'
@@ -108,7 +105,6 @@ const RegisterForm = () => {
           <MenuItem value={"ROLE_CUSTOMER"}>Customer</MenuItem>
           <MenuItem value={"ROLE_RESTAURANT_OWNER"}>Restaurant Owner</MenuItem>
         </TextField>
-
 
         <Button
           sx={{ mt: 2, padding: "1rem" }}
