@@ -122,7 +122,6 @@ const Cart = () => {
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
-                                    margin='normal'
                                     variant='outlined'
                                     fullWidth
                                     id="streetAddress"
@@ -138,7 +137,6 @@ const Cart = () => {
 
                             <Grid item xs={12}>
                                 <TextField
-                                    margin='normal'
                                     variant='outlined'
                                     fullWidth
                                     id="state"
@@ -154,7 +152,6 @@ const Cart = () => {
 
                             <Grid item xs={12}>
                                 <TextField
-                                    margin='normal'
                                     variant='outlined'
                                     fullWidth
                                     id="pincode"
@@ -170,7 +167,6 @@ const Cart = () => {
 
                             <Grid item xs={12}>
                                 <TextField
-                                    margin='normal'
                                     variant='outlined'
                                     fullWidth
                                     id="city"
