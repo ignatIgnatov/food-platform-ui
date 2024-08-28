@@ -1,8 +1,11 @@
 import { Button, MenuItem, TextField, Typography } from '@mui/material'
-import { useFormik } from 'formik'
-import React from 'react'
+import { Field, Form, Formik, useFormik } from 'formik'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
+import { registerUser } from '../../state/authentication/Action';
+import { useDispatch } from 'react-redux';
+import { roles } from '../../util/utils';
 
 const validationSchema = yup.object({
   fullName: yup
@@ -15,13 +18,19 @@ const validationSchema = yup.object({
   password: yup
     .string('Enter your password')
     .min(6, 'Password should be of minimum 6 characters length')
-    .required('Password is required'),
-  role: yup
-    .string('Enter your role')
-    .required("Role is required")
+    .required('Password is required')
 });
 
 const RegisterForm = () => {
+
+  const dispatch = useDispatch();
+
+  const initialValues = {
+    fullName: '',
+    email: '',
+    password: '',
+    role: ''
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -38,7 +47,9 @@ const RegisterForm = () => {
 
   const navigate = useNavigate();
 
-  // const handleSubmit = () => {}
+  const handleSubmit = (values) => {
+    dispatch(registerUser({ userData: values, navigate }))
+  }
 
   return (
     <div>
@@ -47,73 +58,55 @@ const RegisterForm = () => {
         Register
       </Typography>
 
-      <form onSubmit={formik.handleSubmit}>
-        <TextField
-          margin='normal'
-          variant='outlined'
-          fullWidth
-          id="fullName"
-          name="fullName"
-          label="Full Name"
-          value={formik.values.fullName}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.fullName && Boolean(formik.errors.fullName)}
-          helperText={formik.touched.fullName && formik.errors.fullName}
-        />
-        <TextField
-          margin='normal'
-          variant='outlined'
-          fullWidth
-          id="email"
-          name="email"
-          label="Email"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-        />
-        <TextField
-          margin='normal'
-          variant='outlined'
-          fullWidth
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-        />
-        <TextField
-          select
-          margin='normal'
-          variant='outlined'
-          fullWidth
-          id="role"
-          name='role'
-          labelId="role"
-          label="Role"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.role && Boolean(formik.errors.role)}
-          helperText={formik.touched.role && formik.errors.role}
-        >
-          <MenuItem value={"ROLE_CUSTOMER"}>Customer</MenuItem>
-          <MenuItem value={"ROLE_RESTAURANT_OWNER"}>Restaurant Owner</MenuItem>
-        </TextField>
-
-        <Button
-          sx={{ mt: 2, padding: "1rem" }}
-          fullWidth
-          type='submit'
-          variant='contained'
-        >
-          Register</Button>
-      </form>
+      <Formik onSubmit={handleSubmit} initialValues={initialValues}>
+        <Form>
+          <Field
+            as={TextField}
+            name='fullName'
+            label='Full Name'
+            fullWidth
+            variant='outlined'
+            margin='normal'
+          />
+          <Field
+            as={TextField}
+            name='email'
+            label='Email'
+            fullWidth
+            variant='outlined'
+            margin='normal'
+          />
+          <Field
+            as={TextField}
+            name='password'
+            label='Password'
+            type='password'
+            fullWidth
+            variant='outlined'
+            margin='normal'
+          />
+          <Field
+            as={TextField}
+            select
+            margin='normal'
+            variant='outlined'
+            fullWidth
+            name='role'
+            label="Select Role"
+            error={formik.touched.role && Boolean(formik.errors.role)}
+            helperText={formik.touched.role && formik.errors.role}
+          >
+            {roles.map((role) => <MenuItem key={role.name} value={role.value}>{role.name}</MenuItem>)}
+          </Field>
+          <Button
+            sx={{ mt: 2, padding: "1rem" }}
+            fullWidth
+            type='submit'
+            variant='contained'
+          >
+            Register</Button>
+        </Form>
+      </Formik>
 
       <Typography variant='body2' align='center' sx={{ mt: 3 }}>
         You have an account yet?

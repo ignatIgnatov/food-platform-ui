@@ -31,4 +31,16 @@ export const topMeels = [
         image: "https://images.pexels.com/photos/1603901/pexels-photo-1603901.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         title: "Sandwich"
     }
-]
+];
+
+
+export const roles = [
+    {
+        name: "Customer",
+        value: "ROLE_CUSTOMER"
+    },
+    {
+        name: "Restaurant owner",
+        value: "ROLE_RESTAURANT_OWNER"
+    }
+];
