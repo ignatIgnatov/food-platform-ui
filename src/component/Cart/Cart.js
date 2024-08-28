@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import CartItem from './CartItem'
 import AddressCard from './AddressCard'
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { object, string, number } from 'yup';
+import { ErrorMessage, Field, Form, Formik, useFormik } from 'formik';
+import * as yup from 'yup';
 
 const items = [1, 1];
 
@@ -20,25 +20,39 @@ export const style = {
     p: 4,
 };
 
-const initialValues = {
-    streetAddress: "",
-    state: "",
-    pincode: "",
-    city: ""
-}
-
-const validationSchema = object({
-    streetAddress: string().required("Street address is required!"),
-    state: string().required("State is required!"),
-    pincode: number().required("Pincode is required!"),
-    streetAddress: string().required("City is required!"),
-})
+const validationSchema = yup.object({
+    streetAddress: yup
+        .string('Enter your street address')
+        .required('Street address is required'),
+    state: yup
+        .string('Enter your state')
+        .required('State is required'),
+    pincode: yup
+        .string('Enter your pincode')
+        .required('Pincode is required'),
+    city: yup
+        .string('Enter your city')
+        .required('City is required')
+});
 
 const Cart = () => {
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const formik = useFormik({
+        initialValues: {
+            streetAddress: "",
+            state: "",
+            pincode: "",
+            city: ""
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            alert(JSON.stringify(values, null, 2));
+        },
+    })
 
     const createOrderUsingSelectedAddress = () => {
 
@@ -104,81 +118,79 @@ const Cart = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Formik
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handleSubmit}
-                    >
-                        <Form>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <Field
-                                        as={TextField}
-                                        name='streetAddress'
-                                        label='Street Address'
-                                        fullWidth
-                                        variant='outlined'
-                                    // error={!ErrorMessage("streetAddress")}
-                                    // helperText={
-                                    //     <ErrorMessage>
-                                    //         {(msg) => <span className='text-red-600'>{msg}</span>}
-                                    //     </ErrorMessage>
-                                    // }
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Field
-                                        as={TextField}
-                                        name='state'
-                                        label='State'
-                                        fullWidth
-                                        variant='outlined'
-                                    // error={!ErrorMessage("streetAddress")}
-                                    // helperText={
-                                    //     <ErrorMessage>
-                                    //         {(msg) => <span className='text-red-600'>{msg}</span>}
-                                    //     </ErrorMessage>
-                                    // }
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Field
-                                        as={TextField}
-                                        name='pincode'
-                                        label='Pincode'
-                                        fullWidth
-                                        variant='outlined'
-                                    // error={!ErrorMessage("streetAddress")}
-                                    // helperText={
-                                    //     <ErrorMessage>
-                                    //         {(msg) => <span className='text-red-600'>{msg}</span>}
-                                    //     </ErrorMessage>
-                                    // }
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Field
-                                        as={TextField}
-                                        name='city'
-                                        label='City'
-                                        fullWidth
-                                        variant='outlined'
-                                    // error={!ErrorMessage("streetAddress")}
-                                    // helperText={
-                                    //     <ErrorMessage>
-                                    //         {(msg) => <span className='text-red-600'>{msg}</span>}
-                                    //     </ErrorMessage>
-                                    // }
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button fullWidth variant='contained' type='submit' color='primary'>
-                                        Deliver Here
-                                    </Button>
-                                </Grid>
+                    <form onSubmit={formik.handleSubmit}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    margin='normal'
+                                    variant='outlined'
+                                    fullWidth
+                                    id="streetAddress"
+                                    name="streetAddress"
+                                    label="Street Address"
+                                    value={formik.values.streetAddress}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched.streetAddress && Boolean(formik.errors.streetAddress)}
+                                    helperText={formik.touched.streetAddress && formik.errors.streetAddress}
+                                />
                             </Grid>
-                        </Form>
-                    </Formik>
+
+                            <Grid item xs={12}>
+                                <TextField
+                                    margin='normal'
+                                    variant='outlined'
+                                    fullWidth
+                                    id="state"
+                                    name="state"
+                                    label="State"
+                                    value={formik.values.state}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched.state && Boolean(formik.errors.state)}
+                                    helperText={formik.touched.state && formik.errors.state}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <TextField
+                                    margin='normal'
+                                    variant='outlined'
+                                    fullWidth
+                                    id="pincode"
+                                    name="pincode"
+                                    label="Pincode"
+                                    value={formik.values.pincode}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched.pincode && Boolean(formik.errors.pincode)}
+                                    helperText={formik.touched.pincode && formik.errors.pincode}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <TextField
+                                    margin='normal'
+                                    variant='outlined'
+                                    fullWidth
+                                    id="city"
+                                    name="city"
+                                    label="City"
+                                    value={formik.values.city}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched.city && Boolean(formik.errors.city)}
+                                    helperText={formik.touched.city && formik.errors.city}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Button fullWidth variant='contained' type='submit' color='primary'>
+                                    Deliver Here
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </form>
                 </Box>
             </Modal>
         </div>
