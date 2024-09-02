@@ -71,7 +71,7 @@ export const getUser = (jwt) => async (dispatch) => {
     }
 }
 
-export const addToFavorite = ({ jwt, restaurantId }) => async (dispatch) => {
+export const addToFavorite = ({ restaurantId, jwt }) => async (dispatch) => {
     dispatch({ type: ADD_TO_FAVORITE_REQUEST });
 
     try {
