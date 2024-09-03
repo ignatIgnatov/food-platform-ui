@@ -50,9 +50,24 @@ const ProfileNavigation = ({ open, handleClose }) => {
     const navigate = useNavigate();
 
     const handleNavigate = (item) => {
-        if (item.title === "Logout") {
-            dispatch(logout());
-            navigate("/");
+        switch (item.title) {
+            case "Logout":
+                dispatch(logout());
+                navigate("/");
+                break;
+            case "Favorites":
+                navigate("/my-profile/favorites");
+                break;
+            case "Address":
+                navigate("/my-profile/address");
+                break;
+            case "Orders":
+                navigate("/my-profile/orders");
+                break;
+            case "Events":
+                navigate("/my-profile/events");
+                break;
+
         }
     }
 
