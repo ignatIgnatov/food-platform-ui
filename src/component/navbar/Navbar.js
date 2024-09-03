@@ -6,7 +6,6 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Person } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { store } from '../../state/store';
 
 const Navbar = () => {
 

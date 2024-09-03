@@ -4,6 +4,7 @@ import MuliItemCarousel from "./MultiItemCarousel";
 import RestaurantCard from '../Restaurant/RestaurantCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllRestaurantAction } from '../../state/restaurant/Action';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
 
@@ -14,7 +15,7 @@ const Home = () => {
 
     useEffect(() => {
         dispatch(getAllRestaurantAction(jwt))
-    }, [])
+    }, []);
 
     return (
         <div className='pb-10'>
