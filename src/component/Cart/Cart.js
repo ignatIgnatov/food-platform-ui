@@ -1,12 +1,12 @@
 import { Box, Button, Card, Divider, Grid, Modal, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CartItem from './CartItem'
 import AddressCard from './AddressCard'
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import { ErrorMessage, Field, Form, Formik, useFormik } from 'formik';
 import * as yup from 'yup';
-
-const items = [1, 1];
+import { useDispatch, useSelector } from 'react-redux';
+import { createOrder } from '../../state/order/Action';
 
 export const style = {
     position: 'absolute',
@@ -40,6 +40,8 @@ const Cart = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const { auth, cart } = useSelector(state => state);
+    const dispatch = useDispatch();
 
     const formik = useFormik({
         initialValues: {
@@ -50,7 +52,8 @@ const Cart = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+            handleSubmit(values);
+            handleClose();
         },
     })
 
@@ -62,34 +65,51 @@ const Cart = () => {
         setOpen(true);
     }
 
-    const handleSubmit = (values) => { console.log("form values", values); }
+    const handleSubmit = (values) => {
+        const data = {
+            jwt: localStorage.getItem("jwt"),
+            order: {
+                restaurantId: cart.cart?.items[0].food?.restaurantId,
+                deliveryAddress: {
+                    fullName: auth.user?.fullName,
+                    streetAddress: values.streetAddress,
+                    city: values.city,
+                    stateProvince: values.state,
+                    postalCode: values.pincode,
+                    country: "Bulgaria"
+                }
+            }
+        }
+        dispatch(createOrder(data));
+        console.log("order", data.order);
+    }
 
     return (
         <div>
             <main className='lg:flex justify-between'>
                 <section className='lg:w-[30%] space-y-6 lg:min-h-screen pt-10'>
-                    {items.map((item) => <CartItem />)}
+                    {cart?.cartItems.map((item) => <CartItem item={item} />)}
                     <Divider />
                     <div className='billDetails px-5 text-sm'>
                         <p className='font-extralight py-5'>Bill Details</p>
                         <div className='space-y-3'>
                             <div className='flex justify-between text-gray-400'>
                                 <p>Item Total:</p>
-                                <p>$30</p>
+                                <p>${cart?.cart?.total}</p>
                             </div>
                             <div className='flex justify-between text-gray-400'>
                                 <p>Delivery fee</p>
-                                <p>$10</p>
+                                <p>$0</p>
                             </div>
                             <div className='flex justify-between text-gray-400'>
                                 <p>GST and Restaurant Charges</p>
-                                <p>$30</p>
+                                <p>$0</p>
                             </div>
                             <Divider />
                         </div>
                         <div className='flex justify-between text-gray-400 py-4'>
                             <p>Total Pay:</p>
-                            <p>$70</p>
+                            <p>${cart?.cart?.total}</p>
                         </div>
                     </div>
                 </section>
@@ -181,7 +201,11 @@ const Cart = () => {
                             </Grid>
 
                             <Grid item xs={12}>
-                                <Button fullWidth variant='contained' type='submit' color='primary'>
+                                <Button
+                                    fullWidth
+                                    variant='contained'
+                                    type='submit'
+                                    color='primary'>
                                     Deliver Here
                                 </Button>
                             </Grid>
