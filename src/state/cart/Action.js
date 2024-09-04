@@ -10,6 +10,7 @@ export const findCart = (jwt) => {
                     Authorization: `Bearer ${jwt}`
                 }
             });
+            console.log("my cart", data);
             dispatch({ type: FIND_CART_SUCCESS, payload: data });
         } catch (error) {
             console.log("error", error);
@@ -39,7 +40,7 @@ export const addItemToCart = (req) => {
     return async (dispatch) => {
         dispatch({ type: ADD_ITEM_TO_CART_REQUEST });
         try {
-            const { data } = await api.post(`/api/cart/add`, req.cartItem, {
+            const { data } = await api.put(`/api/cart/add`, req.cartItem, {
                 headers: {
                     Authorization: `Bearer ${req.jwt}`
                 }
@@ -70,7 +71,7 @@ export const updateCartItem = (req) => {
 }
 
 export const removeCartItem = ({ cartItemId, jwt }) => {
-    async (dispatch) => {
+    return async (dispatch) => {
         dispatch({ type: REMOVE_CART_ITEM_REQUEST });
         try {
             const { data } = await api.delete(`/api/cart-item/${cartItemId}/remove`, {

@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from './state/authentication/Action';
 import { store } from './state/store';
+import { findCart } from './state/cart/Action';
 
 function App() {
   const dispatch = useDispatch();
@@ -14,7 +15,8 @@ function App() {
   const { auth } = useSelector(store => store);
 
   useEffect(() => {
-    dispatch(getUser(auth.jwt || jwt))
+    dispatch(getUser(auth.jwt || jwt));
+    dispatch(findCart(jwt));
   }, [auth.jwt])
 
   return (

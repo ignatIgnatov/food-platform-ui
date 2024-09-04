@@ -5,10 +5,8 @@ import { useEffect, useState } from "react";
 import MenuCard from "./MenuCard";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getRestaurantById } from "../../state/restaurant/Action";
-
-
-const categoryes = ["all", "pizza", "burger", "chicken", "rice"];
+import { getRestaurantById, getRestaurantsCategory } from "../../state/restaurant/Action";
+import { getMenuItemByRestaurantId } from "../../state/menu/Action";
 
 const foodTypes = [
     { label: "All", value: "all" },
@@ -17,26 +15,41 @@ const foodTypes = [
     { label: "Seasonal", value: "seasonal" },
 ];
 
-const menu = [1, 2, 3, 4, 5, 6, 7, 8];
-
 const RestaurantDetails = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
-    const { auth, restaurant } = useSelector(store => store);
+    const { auth, restaurant, menu } = useSelector(store => store);
+    const [selectedCategory, setSelectedCategory] = useState("");
 
     const { id, city } = useParams();
 
     const [foodType, setFoodType] = useState("all");
 
     const handleFilter = (e) => {
-        console.log(e.target.value, e.target.name);
+        setFoodType(e.target.value);
+    }
+
+    const handleFilterCategory = (e) => {
+        setSelectedCategory(e.target.value);
     }
 
     useEffect(() => {
-        dispatch(getRestaurantById({ jwt, restaurantId: id }))
+        dispatch(getRestaurantById({ jwt, restaurantId: id }));
+        dispatch(getRestaurantsCategory({ jwt, restaurantId: id }));
     }, []);
+
+    useEffect(() => {
+        dispatch(getMenuItemByRestaurantId({
+            jwt,
+            restaurantId: id,
+            vegetarian: foodType === "vegetarian",
+            nonVeg: foodType === "non-vegetarian",
+            seasonal: foodType === "seasonal",
+            foodCategory: selectedCategory
+        }));
+    }, [selectedCategory, foodType]);
 
     return (
         <div className="px-5 lg:px-20">
@@ -48,7 +61,7 @@ const RestaurantDetails = () => {
                             restaurant.restaurant?.images.map((item) => (
                                 <Grid item xs={12} lg={6}>
                                     <img
-                                        className="w-full h-[120vh] object-cover"
+                                        className="w-full h-[60vh] object-cover"
                                         src={item}
                                         alt=""
                                     />
@@ -103,14 +116,18 @@ const RestaurantDetails = () => {
                             </Typography>
 
                             <FormControl className="py-10 space-y-5" component={"fieldset"}>
-                                <RadioGroup onChange={handleFilter} name="food_type" value={foodType}>
+                                <RadioGroup
+                                    onChange={handleFilterCategory}
+                                    name="food_category"
+                                    value={selectedCategory}
+                                >
                                     {
-                                        categoryes.map((item) =>
+                                        restaurant.categories.map((item) =>
                                             <FormControlLabel
-                                                key={item}
-                                                value={item}
+                                                key={item.id}
+                                                value={item.name}
                                                 control={<Radio />}
-                                                label={item} />)
+                                                label={item.name} />)
                                     }
                                 </RadioGroup>
                             </FormControl>
@@ -120,7 +137,7 @@ const RestaurantDetails = () => {
 
                 <div className=" space-y-5 lg:w-[80%] lg:pl-10">
                     {
-                        menu.map((item) => <MenuCard />)
+                        menu.menuItems.map((item) => <MenuCard item={item} />)
                     }
                 </div>
             </section>

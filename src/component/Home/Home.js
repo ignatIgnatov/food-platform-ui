@@ -5,16 +5,17 @@ import RestaurantCard from '../Restaurant/RestaurantCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllRestaurantAction } from '../../state/restaurant/Action';
 import { useNavigate } from 'react-router-dom';
+import { findCart } from '../../state/cart/Action';
 
 const Home = () => {
 
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
 
-    const { restaurant } = useSelector(store => store);
+    const { restaurant, cart } = useSelector(store => store);
 
     useEffect(() => {
-        dispatch(getAllRestaurantAction(jwt))
+        dispatch(getAllRestaurantAction(jwt));
     }, []);
 
     return (
@@ -35,16 +36,20 @@ const Home = () => {
                 <p className='text-2xl font-semibold text-gray-400 py-3 pb-10'>Top Meels</p>
                 <MuliItemCarousel />
             </section>
-            <section className='px-5 pt-10 lg:px-20'>
-                <h1 className='text-2xl font-semibold text-gray-400 pb-8'>Order From Our Handpicked Favorites</h1>
-                <div className='flex flex-wrap items-center justify-around gap-5'>
-                    {
-                        restaurant.restaurants.map((item) => (
-                            <RestaurantCard item={item} />
-                        ))
-                    }
-                </div>
-            </section>
+            {
+                jwt ?
+                    <section className='px-5 pt-10 lg:px-20'>
+                        <h1 className='text-2xl font-semibold text-gray-400 pb-8'>Order From Our Handpicked Favorites</h1>
+                        <div className='flex flex-wrap items-center justify-around gap-5'>
+                            {
+                                restaurant.restaurants.map((item) => (
+                                    <RestaurantCard onClick={console.log(item)} item={item} />
+                                ))
+                            }
+                        </div>
+                    </section>
+                    : ""
+            }
         </div>
     )
 }
