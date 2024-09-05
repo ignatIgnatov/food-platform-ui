@@ -7,6 +7,7 @@ import { ErrorMessage, Field, Form, Formik, useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder } from '../../state/order/Action';
+import { useNavigate } from 'react-router-dom';
 
 export const style = {
     position: 'absolute',
@@ -42,6 +43,7 @@ const Cart = () => {
     const handleClose = () => setOpen(false);
     const { auth, cart } = useSelector(state => state);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
@@ -54,6 +56,7 @@ const Cart = () => {
         onSubmit: (values) => {
             handleSubmit(values);
             handleClose();
+            navigate("/my-profile/orders")
         },
     })
 

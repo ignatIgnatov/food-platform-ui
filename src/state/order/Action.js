@@ -32,6 +32,7 @@ export const getUsersOrders = (jwt) => {
                     Authorization: `Bearer ${jwt}`
                 }
             });
+            console.log("user orders", data);
             dispatch({ type: GET_USERS_ORDERS_SUCCESS, payload: data });
         } catch (error) {
             console.log("error", error);
