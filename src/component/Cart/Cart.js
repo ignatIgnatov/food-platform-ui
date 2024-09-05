@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder } from '../../state/order/Action';
 import { useNavigate } from 'react-router-dom';
+import { clearCartItem } from '../../state/cart/Action';
 
 export const style = {
     position: 'absolute',
@@ -56,9 +57,16 @@ const Cart = () => {
         onSubmit: (values) => {
             handleSubmit(values);
             handleClose();
-            navigate("/my-profile/orders")
+            setTimeout(() => {
+                handleClearCartItems();
+                navigate("/my-profile/orders");
+            }, 1000);
         },
     })
+
+    const handleClearCartItems = () => {
+        dispatch(clearCartItem());
+    }
 
     const createOrderUsingSelectedAddress = () => {
 

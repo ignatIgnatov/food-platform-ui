@@ -96,6 +96,7 @@ export const clearCartItem = () => {
                     Authorization: `Bearer ${localStorage.getItem("jwt")}`
                 }
             });
+            console.log("clear cart items", data);
             dispatch({ type: CLEAR_CART_SUCCESS, payload: data });
         } catch (error) {
             console.log("error", error);
