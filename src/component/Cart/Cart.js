@@ -56,11 +56,11 @@ const Cart = () => {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             handleSubmit(values);
-            handleClose();
-            setTimeout(() => {
-                handleClearCartItems();
-                navigate("/my-profile/orders");
-            }, 1000);
+            // handleClose();
+            // setTimeout(() => {
+            //     handleClearCartItems();
+            //     navigate("/my-profile/orders");
+            // }, 1000);
         },
     })
 
