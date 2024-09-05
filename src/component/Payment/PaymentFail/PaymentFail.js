@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
-import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import { green } from '@mui/material/colors';
+import React from 'react'
+import CancelIcon from '@mui/icons-material/Cancel';
+import { red } from '@mui/material/colors';
 import { Button, Card } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-
-const PaymentSuccess = () => {
+const PaymentFail = () => {
 
     const navigate = useNavigate();
 
@@ -13,9 +12,9 @@ const PaymentSuccess = () => {
         <div className='min-h-screen px-5'>
             <div className='flex flex-col items-center justify-center h-[90vh]'>
                 <Card className='box w-full lg:w-1/4 flex flex-col items-center rounded-md p-5'>
-                    <TaskAltIcon sx={{ fontSize: "5rem", color: green[500] }} />
-                    <h1 className='py-5 text-2xl font-semibold'>Payment Successfully!</h1>
-                    <p className='py-3 text-center text-gray-400'>Thank you for choosing our restaurant!</p>
+                    <CancelIcon sx={{ fontSize: "5rem", color: red[500] }} />
+                    <h1 className='py-5 text-2xl font-semibold'>Payment Fail!</h1>
+                    <p className='py-3 text-center text-gray-400'>Please try again!</p>
                     <Button
                         onClick={() => navigate("/")}
                         variant='contained'
@@ -26,4 +25,4 @@ const PaymentSuccess = () => {
     )
 }
 
-export default PaymentSuccess
+export default PaymentFail

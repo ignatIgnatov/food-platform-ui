@@ -1,13 +1,12 @@
 import { Box, Button, Card, Divider, Grid, Modal, TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import CartItem from './CartItem'
 import AddressCard from './AddressCard'
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
-import { ErrorMessage, Field, Form, Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder } from '../../state/order/Action';
-import { useNavigate } from 'react-router-dom';
 import { clearCartItem } from '../../state/cart/Action';
 
 export const style = {
@@ -44,7 +43,6 @@ const Cart = () => {
     const handleClose = () => setOpen(false);
     const { auth, cart } = useSelector(state => state);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
@@ -56,17 +54,8 @@ const Cart = () => {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             handleSubmit(values);
-            // handleClose();
-            // setTimeout(() => {
-            //     handleClearCartItems();
-            //     navigate("/my-profile/orders");
-            // }, 1000);
         },
     })
-
-    const handleClearCartItems = () => {
-        dispatch(clearCartItem());
-    }
 
     const createOrderUsingSelectedAddress = () => {
 
@@ -92,7 +81,14 @@ const Cart = () => {
             }
         }
         dispatch(createOrder(data));
-        console.log("order", data.order);
+        setTimeout(() => {
+            handleClearCartItems();
+        }, 1000);
+
+    }
+
+    const handleClearCartItems = () => {
+        dispatch(clearCartItem());
     }
 
     return (
@@ -106,7 +102,7 @@ const Cart = () => {
                         <div className='space-y-3'>
                             <div className='flex justify-between text-gray-400'>
                                 <p>Item Total:</p>
-                                <p>${cart?.cart?.total}</p>
+                                <p>${cart.cart?.total}</p>
                             </div>
                             <div className='flex justify-between text-gray-400'>
                                 <p>Delivery fee</p>
@@ -120,7 +116,7 @@ const Cart = () => {
                         </div>
                         <div className='flex justify-between text-gray-400 py-4'>
                             <p>Total Pay:</p>
-                            <p>${cart?.cart?.total}</p>
+                            <p>${cart.cart?.total}</p>
                         </div>
                     </div>
                 </section>
