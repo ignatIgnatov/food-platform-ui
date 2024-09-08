@@ -15,7 +15,7 @@ const IngredientsTable = () => {
                                 <Create />
                             </IconButton>
                         }
-                        title={"Food Categories"}
+                        title={"Ingredients"}
                         sx={{ paddingTop: 2, alignItems: "center", marginTop: 1 }} />
 
                     <TableContainer component={Paper}>
