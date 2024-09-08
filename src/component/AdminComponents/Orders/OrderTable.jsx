@@ -1,4 +1,5 @@
-import { Box, Card, CardHeader, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Edit } from '@mui/icons-material';
+import { Box, Card, CardHeader, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import React from 'react'
 
 const orders = [1, 1, 1, 1];
@@ -21,6 +22,7 @@ const OrderTable = () => {
                             <TableCell align="right">Name</TableCell>
                             <TableCell align="right">Ingredients</TableCell>
                             <TableCell align="right">Status</TableCell>
+                            <TableCell align="right">Update</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -38,7 +40,7 @@ const OrderTable = () => {
                                 <TableCell align="right">{"pizza"}</TableCell>
                                 <TableCell align="right">{"ingredients"}</TableCell>
                                 <TableCell align="right">{"completed"}</TableCell>
-                                <TableCell align="right">{"UPDATE"}</TableCell>
+                                <TableCell align="right"><IconButton><Edit /></IconButton></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
