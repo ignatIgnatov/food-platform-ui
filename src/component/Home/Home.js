@@ -37,18 +37,18 @@ const Home = () => {
                 <MuliItemCarousel />
             </section>
             {
-                jwt ?
-                    <section className='px-5 pt-10 lg:px-20'>
-                        <h1 className='text-2xl font-semibold text-gray-400 pb-8'>Order From Our Handpicked Favorites</h1>
-                        <div className='flex flex-wrap items-center justify-around gap-5'>
-                            {
-                                restaurant.restaurants.map((item) => (
-                                    <RestaurantCard onClick={console.log(item)} item={item} />
-                                ))
-                            }
-                        </div>
-                    </section>
-                    : ""
+
+                <section className='px-5 pt-10 lg:px-20'>
+                    <h1 className='text-2xl font-semibold text-gray-400 pb-8'>Order From Our Handpicked Favorites</h1>
+                    <div className='flex flex-wrap items-center justify-around gap-5'>
+                        {
+                            restaurant.restaurants.map((item) => (
+                                <RestaurantCard onClick={console.log(item)} item={item} />
+                            ))
+                        }
+                    </div>
+                </section>
+
             }
         </div>
     )
