@@ -80,7 +80,7 @@ const RestaurantDetails = () => {
           <Card>
             <CardHeader title={<span className='text-gray-300'>Address</span>} />
             <CardContent>
-              <div className='space-y-4 text-gray-200'>
+              <div className='space-y-4 text-gray-200 pb-5'>
                 <div className='flex'>
                   <p className='w-48'>Country</p>
                   <p className='text-gray-400'>
@@ -141,7 +141,7 @@ const RestaurantDetails = () => {
                 </div>
                 <div className='flex'>
                   <p className='w-48'>Social</p>
-                  <div className='flex items-center pb-3 gap-4'>
+                  <div className='flex items-center pb-3 gap-4 text-gray-400'>
                     <span className='pr-5'>-</span>
                     <a href=''><InstagramIcon sx={{ fontSize: "2rem" }} /></a>
                     <a href=''><TwitterIcon sx={{ fontSize: "2rem" }} /></a>
