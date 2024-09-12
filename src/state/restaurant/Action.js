@@ -40,7 +40,7 @@ export const getRestaurantById = (req) => {
     }
 }
 
-export const getUserByUserId = (jwt) => {
+export const getRestaurantByUserId = (jwt) => {
     return async (dispatch) => {
         dispatch({ type: GET_RESTAURANT_BY_USER_ID_REQUEST });
         try {

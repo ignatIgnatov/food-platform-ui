@@ -3,6 +3,8 @@ import { Button, CircularProgress, Grid, IconButton, TextField } from '@mui/mate
 import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { uploadImageToCloudinary } from '../../../util/uploadToCloudinary';
+import { useDispatch } from 'react-redux';
+import { createRestaurant } from '../../../state/restaurant/Action';
 
 const initialValue = {
   name: "",
@@ -23,6 +25,8 @@ const initialValue = {
 
 const CreateRestaurantForm = () => {
 
+  const dispatch = useDispatch();
+  const jwt = localStorage.getItem("jwt");
   const [uploadImage, setUploadImage] = useState(false);
   const formik = useFormik(
     {
@@ -52,7 +56,7 @@ const CreateRestaurantForm = () => {
           images: values.images
         }
         console.log("data", data);
-
+        dispatch(createRestaurant({ data, jwt }));
       }
     }
   );
