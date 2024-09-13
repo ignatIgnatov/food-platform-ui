@@ -22,7 +22,7 @@ const RestaurantDetails = () => {
 
         <h1 className='text-2xl lg:text-7xl text-center font-bold p-5'>{restaurant?.userRestaurant?.name}</h1>
         <Button
-          color={restaurant?.userRestaurant?.open ? "error" : "secondary"}
+          color={restaurant?.userRestaurant?.open ? "error" : "green"}
           className='py-[1rem] px-[2rem]'
           variant='contained'
           onClick={handleRestaurantStatus}

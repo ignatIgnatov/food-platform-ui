@@ -1,9 +1,9 @@
 import { Create } from '@mui/icons-material'
-import { Box, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-import React, { useState } from 'react'
+import { Box, Button, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import CreateIngredientForm from './CreateIngredientForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIngredientOfRestaurant } from '../../../state/ingredients/Action';
+import { getIngredientOfRestaurant, updateStockOfIngredient } from '../../../state/ingredients/Action';
 
 const style = {
     position: 'absolute',
@@ -27,9 +27,13 @@ const IngredientsTable = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    useState(() => {
+    useEffect(() => {
         dispatch(getIngredientOfRestaurant({ id: restaurant.userRestaurant.id, jwt: jwt }))
-    }, [])
+    }, []);
+
+    const handleUpdateAvailability = (id) => {
+        dispatch(updateStockOfIngredient({ id, jwt }));
+    }
 
     return (
         <div>
@@ -43,7 +47,7 @@ const IngredientsTable = () => {
                         aria-describedby="modal-modal-description"
                     >
                         <Box sx={style}>
-                            <CreateIngredientForm />
+                            <CreateIngredientForm setOpen={setOpen} />
                         </Box>
                     </Modal>
 
@@ -76,11 +80,15 @@ const IngredientsTable = () => {
                                         <TableCell align="left">{row.id}</TableCell>
                                         <TableCell align="left">{row.name}</TableCell>
                                         <TableCell align="left">{row.category.name}</TableCell>
-                                        <TableCell align="left">{
-                                            row.inStoke
-                                                ? <span className='bg-green-600 text-white p-2 rounded-md'>available</span>
-                                                : <span className='bg-red-600 text-white p-2 rounded-md'>not available</span>
-                                        }
+                                        <TableCell align="left">
+                                            <Button
+                                                onClick={() => handleUpdateAvailability(row.id)}
+                                                color={row.inStoke ? 'green' : 'error'}
+                                                variant='contained'
+                                                className='text-white p-2 rounded-md'
+                                            >
+                                                {row.inStoke ? "available" : "not available"}
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}

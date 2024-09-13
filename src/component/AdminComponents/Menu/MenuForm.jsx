@@ -1,43 +1,38 @@
 import { AddPhotoAlternate, Close } from '@mui/icons-material';
 import { Box, Button, Chip, CircularProgress, FormControl, Grid, IconButton, InputLabel, MenuItem, OutlinedInput, Select, TextField } from '@mui/material';
 import { useFormik } from 'formik'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { uploadImageToCloudinary } from '../../../util/uploadToCloudinary';
+import { useDispatch, useSelector } from 'react-redux';
+import { createMenuItem } from '../../../state/menu/Action';
+import { getIngredientOfRestaurant } from '../../../state/ingredients/Action';
 
 const initialValue = {
     name: "",
     description: "",
     price: "",
-    category: "",
+    foodCategory: "",
     restaurantId: "",
     vegetarian: true,
     seasonal: false,
-    ingredients: [],
+    ingredientsItems: [],
     images: []
 }
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
-
 const CreateMenuForm = () => {
+
+    const dispatch = useDispatch()
+    const { restaurant, ingredients } = useSelector(store => store);
+    const jwt = localStorage.getItem("jwt");
 
     const [uploadImage, setUploadImage] = useState(false);
     const formik = useFormik(
         {
             initialValues: initialValue,
             onSubmit: (values) => {
-                values.restaurantId = 1;
-                console.log("data", values);
-
+                values.restaurantId = restaurant.userRestaurant.id;
+                
+                dispatch(createMenuItem({ req: values, jwt }));
             }
         }
     );
@@ -55,6 +50,11 @@ const CreateMenuForm = () => {
         updatedImages.splice(index, 1);
         formik.setFieldValue('images', updatedImages);
     }
+
+    useEffect(() => {
+        dispatch(getIngredientOfRestaurant({ id: restaurant.userRestaurant.id, jwt: jwt }))
+    }, []);
+
 
     return (
         <div className='py-10 px-5 lg:flex items-center justify-center min-h-screen'>
@@ -154,14 +154,17 @@ const CreateMenuForm = () => {
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
-                                    value={formik.values.category}
+                                    value={formik.values.foodCategory}
                                     label="Category"
-                                    name='category'
+                                    name='foodCategory'
                                     onChange={formik.handleChange}
                                 >
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    {
+                                        restaurant.categories.map((item) => (
+                                            <MenuItem value={item}>{item.name}</MenuItem>
+                                        ))
+                                    }
+
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -172,29 +175,30 @@ const CreateMenuForm = () => {
                                 <Select
                                     labelId="demo-multiple-chip-label"
                                     id="demo-multiple-chip"
-                                    name='ingredients'
+                                    name='ingredientsItems'
                                     multiple
-                                    value={formik.values.ingredients}
+                                    value={formik.values.ingredientsItems}
                                     onChange={formik.handleChange}
                                     input={<OutlinedInput id="select-multiple-chip" label="Ingredients" />}
                                     renderValue={(selected) => (
                                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                            {selected.map((value) => (
-                                                <Chip key={value} label={value} />
+                                            {selected.map((item) => (
+                                                <Chip key={item.id} label={item.name} />
                                             ))}
                                         </Box>
                                     )}
-                                    MenuProps={MenuProps}
-                                >
-                                    {["bread", "souce", "salt"].map((name, index) => (
-                                        <MenuItem
-                                            key={name}
-                                            value={name}
 
-                                        >
-                                            {name}
-                                        </MenuItem>
-                                    ))}
+                                >
+                                    {
+                                        ingredients.ingredients?.map((item, index) => (
+                                            <MenuItem
+                                                key={item.id}
+                                                value={item}
+
+                                            >
+                                                {item.name}
+                                            </MenuItem>
+                                        ))}
                                 </Select>
                             </FormControl>
                         </Grid>
