@@ -1,7 +1,9 @@
 import { Create } from '@mui/icons-material'
 import { Box, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CreateIngredientCategoryForm from './CreateIngredientCategoryForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIngredientCategory } from '../../../state/ingredients/Action';
 
 const style = {
     position: 'absolute',
@@ -15,13 +17,19 @@ const style = {
     p: 4,
 };
 
-const orders = [1, 1, 1];
-
 const IngredientsCategoryTable = () => {
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const { restaurant, ingredients } = useSelector(store => store);
+    const dispatch = useDispatch();
+    const token = localStorage.getItem("jwt");
+
+    useEffect(() => {
+        dispatch(getIngredientCategory({ id: restaurant.userRestaurant?.id, jwt: token }));
+    }, []);
 
     return (
         <div>
@@ -35,7 +43,7 @@ const IngredientsCategoryTable = () => {
                         aria-describedby="modal-modal-description"
                     >
                         <Box sx={style}>
-                            <CreateIngredientCategoryForm />
+                            <CreateIngredientCategoryForm setOpen={setOpen} />
                         </Box>
                     </Modal>
 
@@ -57,14 +65,14 @@ const IngredientsCategoryTable = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {orders.map((row) => (
+                                {ingredients.category.map((row) => (
                                     <TableRow
                                         key={row.name}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
 
-                                        <TableCell align="left">{1}</TableCell>
-                                        <TableCell align="left">{"name"}</TableCell>
+                                        <TableCell align="left">{row.id}</TableCell>
+                                        <TableCell align="left">{row.name}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

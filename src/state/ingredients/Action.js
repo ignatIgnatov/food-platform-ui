@@ -11,6 +11,8 @@ export const getIngredientOfRestaurant = ({ id, jwt }) => {
                 }
             });
             dispatch({ type: GET_INGREDIENTS_SUCCESS, payload: res.data });
+            console.log("get ingredients of retaurant", res.data);
+
         } catch (error) {
             console.log("error", error);
             dispatch({ type: GET_INGREDIENTS_FAILURE, payload: error });
@@ -22,12 +24,14 @@ export const createIngredient = ({ data, jwt }) => {
     return async (dispatch) => {
         dispatch({ type: CREATE_INGREDIENT_REQUEST });
         try {
-            const res = await api.post(`/api/admin/ingredients`, data, {
+            const res = await api.post(`/api/admin/ingredients/item`, data, {
                 headers: {
                     Authorization: `Bearer ${jwt}`
                 }
             });
             dispatch({ type: CREATE_INGREDIENT_SUCCESS, payload: res.data });
+            console.log("create ingredient item", res.data);
+
         } catch (error) {
             console.log("error", error);
             dispatch({ type: CREATE_INGREDIENT_FAILURE, payload: error });
@@ -35,7 +39,7 @@ export const createIngredient = ({ data, jwt }) => {
     }
 }
 
-export const createIngredientCategory = ({ data, jet }) => {
+export const createIngredientCategory = ({ data, jwt }) => {
     return async (dispatch) => {
         dispatch({ type: CREATE_INGREDIENT_CATEGORY_REQUEST });
         try {
@@ -44,7 +48,10 @@ export const createIngredientCategory = ({ data, jet }) => {
                     Authorization: `Bearer ${jwt}`
                 }
             });
+
             dispatch({ type: CREATE_INGREDIENT_CATEGORY_SUCCESS, payload: res.data });
+            console.log("create ingredient categories", res.data);
+
         } catch (error) {
             console.log("error", error);
             dispatch({ type: CREATE_INGREDIENT_CATEGORY_FAILURE, payload: error });
@@ -52,16 +59,20 @@ export const createIngredientCategory = ({ data, jet }) => {
     }
 }
 
-const getIngredientCategory = ({ id, jwt }) => {
+export const getIngredientCategory = ({ id, jwt }) => {
     return async (dispatch) => {
         dispatch({ type: GET_INGREDIENT_CATEGORY_REQUEST });
         try {
-            const { data } = await api.get(`/api/admin/ingredients/restaurant/${id}/category`, {
+            const res = await api.get(`/api/admin/ingredients/restaurant/${id}/category`, {
                 headers: {
                     Authorization: `Bearer ${jwt}`
                 }
             });
-            dispatch({ type: GET_INGREDIENT_CATEGORY_SUCCESS, payload: data });
+
+
+            dispatch({ type: GET_INGREDIENT_CATEGORY_SUCCESS, payload: res.data });
+            console.log("get ingredient categories", res.data);
+
         } catch (error) {
             console.log("error", error);
             dispatch({ type: GET_INGREDIENT_CATEGORY_FAILURE, payload: error });
@@ -69,7 +80,7 @@ const getIngredientCategory = ({ id, jwt }) => {
     }
 }
 
-const updateStockOfIngredient = ({ id, jwt }) => {
+export const updateStockOfIngredient = ({ id, jwt }) => {
     return async (dispatch) => {
         dispatch({ type: UPDATE_STOCK_REQUEST });
         try {

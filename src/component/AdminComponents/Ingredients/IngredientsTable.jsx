@@ -2,6 +2,8 @@ import { Create } from '@mui/icons-material'
 import { Box, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import React, { useState } from 'react'
 import CreateIngredientForm from './CreateIngredientForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIngredientOfRestaurant } from '../../../state/ingredients/Action';
 
 const style = {
     position: 'absolute',
@@ -15,13 +17,19 @@ const style = {
     p: 4,
 };
 
-const orders = [1, 1, 1];
-
 const IngredientsTable = () => {
+
+    const dispatch = useDispatch();
+    const { restaurant, ingredients } = useSelector(store => store);
+    const jwt = localStorage.getItem("jwt");
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    useState(() => {
+        dispatch(getIngredientOfRestaurant({ id: restaurant.userRestaurant.id, jwt: jwt }))
+    }, [])
 
     return (
         <div>
@@ -59,16 +67,21 @@ const IngredientsTable = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {orders.map((row) => (
+                                {ingredients.ingredients.map((row) => (
                                     <TableRow
                                         key={row.name}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
 
-                                        <TableCell align="left">{1}</TableCell>
-                                        <TableCell align="left">{"name"}</TableCell>
-                                        <TableCell align="left">{"category"}</TableCell>
-                                        <TableCell align="left">{"availability"}</TableCell>
+                                        <TableCell align="left">{row.id}</TableCell>
+                                        <TableCell align="left">{row.name}</TableCell>
+                                        <TableCell align="left">{row.category.name}</TableCell>
+                                        <TableCell align="left">{
+                                            row.inStoke
+                                                ? <span className='bg-green-600 text-white p-2 rounded-md'>available</span>
+                                                : <span className='bg-red-600 text-white p-2 rounded-md'>not available</span>
+                                        }
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

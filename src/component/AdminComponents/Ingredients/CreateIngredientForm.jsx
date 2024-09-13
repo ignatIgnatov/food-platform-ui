@@ -1,20 +1,25 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { createIngredient } from '../../../state/ingredients/Action';
 
 const CreateIngredientForm = () => {
 
-
+    const dispatch = useDispatch();
+    const { restaurant, ingredients } = useSelector(store => store);
+    const jwt = localStorage.getItem("jwt");
     const [formData, setFormData] = useState({ name: "", ingredientCategoryId: [] })
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         const data = {
             name: formData.name,
-            ingredientCategory: {
-                id: 1
-            }
-        }
-        console.log(data);
+            restaurantId: restaurant.userRestaurant.id,
+            categoryId: formData.ingredientCategoryId
 
+        }
+
+        dispatch(createIngredient({ data, jwt }));
     }
 
     const handleInputChange = (e) => {
@@ -32,9 +37,9 @@ const CreateIngredientForm = () => {
                 onSubmit={handleSubmit}>
                 <TextField
                     fullWidth
-                    id='ingredient'
-                    name='ingredient'
-                    label="Ingredient"
+                    id='name'
+                    name='name'
+                    label="Ingredient Name"
                     variant='outlined'
                     onChange={handleInputChange}
                     value={formData.categoryName}
@@ -51,9 +56,12 @@ const CreateIngredientForm = () => {
                         name='ingredientCategoryId'
                         onChange={handleInputChange}
                     >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        {
+                            ingredients.category.map((item) => (
+                                <MenuItem value={item.id}>{item.name}</MenuItem>
+                            ))
+                        }
+
                     </Select>
                 </FormControl>
 

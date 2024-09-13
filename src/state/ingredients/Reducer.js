@@ -9,6 +9,7 @@ const initialState = {
 }
 
 const ingredientReducer = (state = initialState, action) => {
+
     switch (action.type) {
 
         case GET_INGREDIENTS_REQUEST:

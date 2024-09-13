@@ -2,6 +2,7 @@ import { Create } from '@mui/icons-material'
 import { Box, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import React, { useState } from 'react'
 import CreateFoodCategoryForm from './CreateFoodCategoryForm';
+import { useSelector } from 'react-redux';
 
 const style = {
     position: 'absolute',
@@ -15,10 +16,9 @@ const style = {
     p: 4,
 };
 
-const orders = [1, 1, 1];
-
 const FoodCategoryTable = () => {
 
+    const { restaurant } = useSelector(store => store);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -35,7 +35,7 @@ const FoodCategoryTable = () => {
                         aria-describedby="modal-modal-description"
                     >
                         <Box sx={style}>
-                            <CreateFoodCategoryForm />
+                            <CreateFoodCategoryForm setOpen={setOpen} />
                         </Box>
                     </Modal>
 
@@ -57,14 +57,14 @@ const FoodCategoryTable = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {orders.map((row) => (
+                                {restaurant.categories.map((row) => (
                                     <TableRow
                                         key={row.name}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
 
-                                        <TableCell align="left">{1}</TableCell>
-                                        <TableCell align="left">{"name"}</TableCell>
+                                        <TableCell align="left">{row.id}</TableCell>
+                                        <TableCell align="left">{row.name}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
