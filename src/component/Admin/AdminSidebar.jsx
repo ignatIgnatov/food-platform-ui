@@ -66,7 +66,6 @@ const AdminSidebar = ({ handleClose }) => {
             dispatch(logout());
             navigate('/');
             handleClose();
-
         }
     }
     return (

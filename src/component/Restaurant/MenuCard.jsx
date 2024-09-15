@@ -32,6 +32,10 @@ const MenuCard = ({ item }) => {
         }
         dispatch(addItemToCart(requestData));
     }
+console.log("item", item);
+
+
+    
 
     return (
         <div>
@@ -60,11 +64,11 @@ const MenuCard = ({ item }) => {
                     <form>
                         <div className="flex gap-5 flex-wrap">
                             {
-                                Object.keys(categorizeIngredients(item.ingredientsItems)).map((category) => (
+                                Object.keys(categorizeIngredients(item.ingredients)).map((category) => (
                                     <div>
                                         <p>{category}</p>
                                         <FormGroup>
-                                            {categorizeIngredients(item.ingredientsItems)[category].map((item) => (
+                                            {categorizeIngredients(item.ingredients)[category].map((item) => (
                                                 <FormControlLabel key={item.name}
                                                     control={<Checkbox onChange={() => handleCheckboxChange(item.name)} />}
                                                     label={item.name}

@@ -1,10 +1,48 @@
 import { Edit } from '@mui/icons-material';
-import { Box, Card, CardHeader, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-import React from 'react'
+import { Avatar, Box, Card, CardHeader, Chip, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRestaurantsOrder, updateOrderStatus } from '../../../state/restaurantOrder/Action';
 
-const orders = [1, 1, 1, 1];
+const orderStatus = [
+    { label: "Pending", value: "PENDING" },
+    { label: "Completed", value: "COMPLETED" },
+    { label: "Out For Delivery", value: "OUT_FOR_DELIVERY" },
+    { label: "Delivered", value: "DELIVERED" }
+]
 
 const OrderTable = () => {
+
+    const dispatch = useDispatch();
+    const { restaurant, restaurantOrder } = useSelector(store => store);
+    const jwt = localStorage.getItem("jwt");
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+
+    const handleUpdateStatus = (id, value) => {
+        console.log(id);
+
+        dispatch(updateOrderStatus({
+            orderId: id, orderStatus: value, jwt: jwt
+        }));
+        handleClose();
+    }
+
+    useEffect(() => {
+        dispatch(fetchRestaurantsOrder({
+            jwt,
+            restaurantId: restaurant.userRestaurant.id
+        }));
+    }, [])
+
     return (
         <Box>
             <Card>
@@ -16,31 +54,59 @@ const OrderTable = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
-                            <TableCell align="right">Image</TableCell>
-                            <TableCell align="right">Customer</TableCell>
-                            <TableCell align="right">Price</TableCell>
-                            <TableCell align="right">Name</TableCell>
-                            <TableCell align="right">Ingredients</TableCell>
-                            <TableCell align="right">Status</TableCell>
+                            <TableCell align="left">Image</TableCell>
+                            <TableCell align="left">Customer</TableCell>
+                            <TableCell align="left">Price</TableCell>
+                            <TableCell align="left">Name</TableCell>
+                            <TableCell align="left">Ingredients</TableCell>
+                            <TableCell align="left">Status</TableCell>
                             <TableCell align="right">Update</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {orders.map((row) => (
+                        {restaurantOrder.orders.map((item) => (
                             <TableRow
-                                key={row.name}
+                                key={item.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
-                                    {1}
+                                    {item.id}
                                 </TableCell>
-                                <TableCell align="right">{"image"}</TableCell>
-                                <TableCell align="right">{"customer"}</TableCell>
-                                <TableCell align="right">{"price"}</TableCell>
-                                <TableCell align="right">{"pizza"}</TableCell>
-                                <TableCell align="right">{"ingredients"}</TableCell>
-                                <TableCell align="right">{"completed"}</TableCell>
-                                <TableCell align="right"><IconButton><Edit /></IconButton></TableCell>
+                                <TableCell align="right">
+                                    <div className='flex flex-wrap justify-start items-center gap-2'>
+                                        {item.items.map((image) => <Avatar src={image.food.images[0]} />)}
+                                    </div>
+                                </TableCell>
+                                <TableCell align="left">{item.customer.fullName}</TableCell>
+                                <TableCell align="left">{item.totalPrice}</TableCell>
+                                <TableCell align="left">
+                                    <div className='flex flex-wrap justify-start items-center gap-2'>
+                                        {item.items.map((food) => <Chip label={food.food.name} />)}
+                                    </div>
+                                </TableCell>
+                                <TableCell align="left">
+                                    <div className='flex flex-wrap justify-start items-center gap-2'>
+                                        {item.items.map((food) => food.ingredients.map((i) => <Chip label={i} />))}
+                                    </div>
+                                </TableCell>
+                                <TableCell align="left">{item.orderStatus}</TableCell>
+                                <TableCell align="right">
+                                    <IconButton onClick={handleClick}><Edit /></IconButton>
+                                    <Menu
+                                        id="basic-menu"
+                                        anchorEl={anchorEl}
+                                        open={open}
+                                        onClose={handleClose}
+                                        MenuListProps={{
+                                            'aria-labelledby': 'basic-button',
+                                        }}
+                                    >
+                                        {
+                                            orderStatus.map((status) => <MenuItem onClick={() => handleUpdateStatus(item.id, status.value)}>{status.label}</MenuItem>)
+                                        }
+
+                                    </Menu>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
